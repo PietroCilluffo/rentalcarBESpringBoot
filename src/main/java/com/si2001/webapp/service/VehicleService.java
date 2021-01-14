@@ -6,13 +6,14 @@ import com.si2001.webapp.dto.VehicleDto;
 import com.si2001.webapp.entities.Vehicle;
 
 public interface VehicleService {
-	long insVehicle(Vehicle vehicle);
+	long insVehicle(VehicleDto vehicle);
 	void elVehicleId(long id);
-	void aggVehicle(Vehicle vehicle);
-	Vehicle cercaVehicleId(long id);
+	void aggVehicle(VehicleDto vehicle);
+	VehicleDto cercaVehicleId(long id);
 	List<VehicleDto>  trovaTutti();
-	void elVehicle(Vehicle vehicle);
-	List<Vehicle> trovaPerModello(String modello);
-	List<Vehicle> trovaPerCasa(String casa);
-	List<Vehicle> trovaPerAnno(String anno);
+	void elVehicle(VehicleDto vehicle);
+	List<VehicleDto> trovaPerModello(String modello);
+	List<VehicleDto> trovaPerCasa(String casa);
+	List<VehicleDto> trovaPerAnno(String anno);
+	List<VehicleDto> trovaPerTarga(String anno);
 }

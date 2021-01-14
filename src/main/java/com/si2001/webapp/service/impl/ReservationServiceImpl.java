@@ -5,9 +5,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.si2001.webapp.dto.ReservationDto;
+import com.si2001.webapp.dto.UserDto;
 import com.si2001.webapp.entities.Reservation;
+import com.si2001.webapp.entities.User;
 import com.si2001.webapp.repository.ReservationRepository;
 import com.si2001.webapp.service.ReservationService;
 @Service
@@ -15,11 +19,13 @@ import com.si2001.webapp.service.ReservationService;
 public class ReservationServiceImpl implements ReservationService{
   @Autowired
   ReservationRepository reservationRepo;
-
+  @Autowired
+  private ModelMapper modelMapper;
 @Override
-public long insReservation(Reservation reservation) {
+public long insReservation(ReservationDto reservation) {
 	// TODO Auto-generated method stub
-	reservationRepo.save(reservation);
+	Reservation r = modelMapper.map(reservation,Reservation.class);
+	reservationRepo.save(r);
 	return 0;
 }
 
@@ -31,34 +37,50 @@ public void elReservationId(long id) {
 }
 
 @Override
-public void aggReservation(Reservation reservation) {
+public void aggReservation(ReservationDto reservation) {
 	// TODO Auto-generated method stub
-	reservationRepo.save(reservation);
+	Reservation r = modelMapper.map(reservation,Reservation.class);
+	reservationRepo.save(r);
 	
 }
 
 @Override
-public Reservation cercaReservationId(long id) {
+public ReservationDto cercaReservationId(long id) {
 	// TODO Auto-generated method stub
-	return reservationRepo.findById(id);
+	Reservation r = reservationRepo.findById(id);
+	ReservationDto dto = modelMapper.map(r,ReservationDto.class);
+	return dto;
 }
 
 @Override
-public List<Reservation> trovaTutti() {
+public List<ReservationDto> trovaTutti() {
 	// TODO Auto-generated method stub
-	return reservationRepo.findAll();
+	List<Reservation> reservations =  reservationRepo.findAll();
+	List<ReservationDto> dtos = null;
+	for(int i = 0; i<reservations.size(); i++) {
+		Reservation r = reservations.get(i);
+		dtos.add(modelMapper.map(r, ReservationDto.class)) ;
+	}
+	return dtos;
 }
 
 @Override
-public List<Reservation> trovaPrenotazioniPerUser(long idUser) {
+public List<ReservationDto> trovaPrenotazioniPerUser(long idUser) {
 	// TODO Auto-generated method stub
-	return reservationRepo.findByIdUser(idUser);
+	List<Reservation> reservations =  reservationRepo.findByIdUser(idUser);
+	List<ReservationDto> dtos = null;
+	for(int i = 0; i<reservations.size(); i++) {
+		Reservation r = reservations.get(i);
+		dtos.add(modelMapper.map(r, ReservationDto.class)) ;
+	}
+	return dtos;
 }
 
 @Override
-public void elReservation(Reservation reservation) {
+public void elReservation(ReservationDto reservation) {
 	// TODO Auto-generated method stub
-	reservationRepo.delete(reservation);
+	Reservation r = modelMapper.map(reservation,Reservation.class);
+	reservationRepo.delete(r);
 }
 
 @Override

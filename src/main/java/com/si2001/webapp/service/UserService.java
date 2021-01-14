@@ -2,17 +2,18 @@ package com.si2001.webapp.service;
 
 import java.util.List;
 
+import com.si2001.webapp.dto.UserDto;
 import com.si2001.webapp.entities.User;
 
 public interface UserService {
  
-	long insUser(User user);
+	long insUser(UserDto user);
 	void elUserId(long id);
-	void aggUser(User user);
-	User cercaUserId(long id);
-	List<User> trovaTutti();
-	List<User> trovaPerNome(String nome);
-	List<User> trovaPerCognome(String cognome);
-	List<User> trovaPerEmail(String email);
-	void elUser(User user);
+	void aggUser(UserDto user);
+	UserDto cercaUserId(long id);
+	List<UserDto> trovaTutti();
+	List<UserDto> trovaPerNome(String nome);
+	List<UserDto> trovaPerCognome(String cognome);
+	List<UserDto> trovaPerEmail(String email);
+	void elUser(UserDto user);
 }

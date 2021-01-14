@@ -19,9 +19,10 @@ public class VehicleServiceImpl implements VehicleService{
   @Autowired
   private ModelMapper modelMapper;
 @Override
-public long insVehicle(Vehicle vehicle) {
+public long insVehicle(VehicleDto vehicle) {
 	// TODO Auto-generated method stub
-	vehicleRepo.save(vehicle);
+	Vehicle v = modelMapper.map(vehicle,Vehicle.class);
+	vehicleRepo.save(v);
 	return 0;
 }
 
@@ -33,15 +34,17 @@ public void elVehicleId(long id) {
 }
 
 @Override
-public void aggVehicle(Vehicle vehicle) {
+public void aggVehicle(VehicleDto vehicle) {
 	// TODO Auto-generated method stub
-	vehicleRepo.save(vehicle);
+	Vehicle v = modelMapper.map(vehicle,Vehicle.class);
+	vehicleRepo.save(v);
 }
 
 @Override
-public Vehicle cercaVehicleId(long id) {
+public VehicleDto cercaVehicleId(long id) {
 	// TODO Auto-generated method stub
-	return vehicleRepo.findById(id);
+	Vehicle vehicle =  vehicleRepo.findById(id);
+	return modelMapper.map(vehicle,VehicleDto.class);
 }
 
 @Override
@@ -59,27 +62,57 @@ public List<VehicleDto> trovaTutti() {
 }
 
 @Override
-public void elVehicle(Vehicle vehicle) {
+public void elVehicle(VehicleDto vehicle) {
 	// TODO Auto-generated method stub
-	vehicleRepo.delete(vehicle);
+	Vehicle v = modelMapper.map(vehicle,Vehicle.class);
+	vehicleRepo.delete(v);
 }
 
 @Override
-public List<Vehicle> trovaPerModello(String modello) {
+public List<VehicleDto> trovaPerModello(String modello) {
 	// TODO Auto-generated method stub
-	return vehicleRepo.findByModello(modello);
+	List<Vehicle> vehicles = vehicleRepo.findByModello(modello);
+	List<VehicleDto> dtos = null;
+	for(int i = 0; i<vehicles.size(); i++) {
+		Vehicle v = vehicles.get(i);
+		dtos.add(modelMapper.map(v, VehicleDto.class)) ;
+	}
+	return dtos;
 }
 
 @Override
-public List<Vehicle> trovaPerCasa(String casa) {
+public List<VehicleDto> trovaPerCasa(String casa) {
 	// TODO Auto-generated method stub
-	return vehicleRepo.findByCasa(casa);
+	List<Vehicle> vehicles = vehicleRepo.findByCasa(casa);
+	List<VehicleDto> dtos = null;
+	for(int i = 0; i<vehicles.size(); i++) {
+		Vehicle v = vehicles.get(i);
+		dtos.add(modelMapper.map(v, VehicleDto.class)) ;
+	}
+	return dtos;
 }
 
 @Override
-public List<Vehicle> trovaPerAnno(String anno) {
+public List<VehicleDto> trovaPerAnno(String anno) {
 	// TODO Auto-generated method stub
-	return vehicleRepo.findByAnno(anno);
+	List<Vehicle> vehicles = vehicleRepo.findByAnno(anno);
+	List<VehicleDto> dtos = null;
+	for(int i = 0; i<vehicles.size(); i++) {
+		Vehicle v = vehicles.get(i);
+		dtos.add(modelMapper.map(v, VehicleDto.class)) ;
+	}
+	return dtos;
+}
+@Override
+public List<VehicleDto> trovaPerTarga(String targa) {
+	// TODO Auto-generated method stub
+	List<Vehicle> vehicles = vehicleRepo.findByTarga(targa);
+	List<VehicleDto> dtos = null;
+	for(int i = 0; i<vehicles.size(); i++) {
+		Vehicle v = vehicles.get(i);
+		dtos.add(modelMapper.map(v, VehicleDto.class)) ;
+	}
+	return dtos;
 }
   
 }

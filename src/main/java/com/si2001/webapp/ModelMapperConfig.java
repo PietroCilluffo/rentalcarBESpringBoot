@@ -1,4 +1,4 @@
-package com.si2001.webapp.rentalcarBoot;
+package com.si2001.webapp;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

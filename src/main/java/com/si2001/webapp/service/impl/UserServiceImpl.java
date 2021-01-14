@@ -2,11 +2,15 @@ package com.si2001.webapp.service.impl;
 
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.si2001.webapp.dto.UserDto;
+import com.si2001.webapp.dto.VehicleDto;
 import com.si2001.webapp.entities.User;
+import com.si2001.webapp.entities.Vehicle;
 import com.si2001.webapp.repository.UserRepository;
 import com.si2001.webapp.service.UserService;
 
@@ -16,12 +20,13 @@ public class UserServiceImpl implements UserService{
   
 	@Autowired 
 	UserRepository userRepo;
-
+	@Autowired
+    private ModelMapper modelMapper;
 	@Override
-	public long insUser(User user) {
+	public long insUser(UserDto user) {
 		// TODO Auto-generated method stub
-		
-		userRepo.save(user);
+		User u = modelMapper.map(user,User.class);
+		userRepo.save(u);
 		return 0;
 	}
 
@@ -33,46 +38,79 @@ public class UserServiceImpl implements UserService{
 	}
 
 	@Override
-	public void aggUser(User user) {
+	public void aggUser(UserDto user) {
 		// TODO Auto-generated method stub
-		userRepo.save(user);
+		User u = modelMapper.map(user,User.class);
+		userRepo.save(u);
 	}
 
 	@Override
-	public User cercaUserId(long id) {
+	public UserDto cercaUserId(long id) {
 		// TODO Auto-generated method stub
 		
-		return userRepo.findById(id);
+		User u =  userRepo.findById(id);
+		UserDto dto = modelMapper.map(u,UserDto.class);
+		return dto;
 	}
 
 	@Override
-	public List<User> trovaTutti() {
+	public List<UserDto> trovaTutti() {
 		// TODO Auto-generated method stub
-		return userRepo.findAll();
+		
+		List<User> users = userRepo.findAll();
+		
+		List<UserDto> dtos = null;
+		for(int i = 0; i<users.size(); i++) {
+			User u = users.get(i);
+			dtos.add(modelMapper.map(u, UserDto.class)) ;
+		}
+		return dtos;
 	}
 
 	@Override
-	public List<User> trovaPerNome(String nome) {
+	public List<UserDto> trovaPerNome(String nome) {
 		// TODO Auto-generated method stub
-		return userRepo.findByNome(nome);
+		
+	List<User> users = userRepo.findByNome(nome);
+		
+		List<UserDto> dtos = null;
+		for(int i = 0; i<users.size(); i++) {
+			User u = users.get(i);
+			dtos.add(modelMapper.map(u, UserDto.class)) ;
+		}
+		return dtos;
 	}
 
 	@Override
-	public List<User> trovaPerCognome(String cognome) {
+	public List<UserDto> trovaPerCognome(String cognome) {
 		// TODO Auto-generated method stub
-		return userRepo.findByCognome(cognome);
+		List<User> users =  userRepo.findByCognome(cognome);
+		List<UserDto> dtos = null;
+		for(int i = 0; i<users.size(); i++) {
+			User u = users.get(i);
+			dtos.add(modelMapper.map(u, UserDto.class)) ;
+		}
+		return dtos;
 	}
 
 	@Override
-	public List<User> trovaPerEmail(String email) {
+	public List<UserDto> trovaPerEmail(String email) {
 		// TODO Auto-generated method stub
-		return userRepo.findByEmail(email);
+		List<User> users =  userRepo.findByEmail(email);
+		List<UserDto> dtos = null;
+		for(int i = 0; i<users.size(); i++) {
+			User u = users.get(i);
+			dtos.add(modelMapper.map(u, UserDto.class)) ;
+		}
+		return dtos;
+		
 	}
 
 	@Override
-	public void elUser(User user) {
+	public void elUser(UserDto user) {
 		// TODO Auto-generated method stub
-		userRepo.delete(user);
+		User u = modelMapper.map(user,User.class);
+		userRepo.delete(u);
 	}
 	
 	
