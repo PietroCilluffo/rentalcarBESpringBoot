@@ -13,7 +13,8 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long>{
    
    void delete (Reservation reservation);
    
-   List<Reservation> findByIdUser(long idUser);
+   //Reservation findByIdUser(Integer idUser);
+ 
    
    Reservation findById(long id);
    

@@ -17,6 +17,8 @@ import javax.persistence.TemporalType;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -31,9 +33,15 @@ import java.util.Date;
 @Entity
 @Data
 @Table(name = "reservation")
-
 public class Reservation implements Serializable {
-	 private static final long serialVersionUID = 1L;
+	
+	 /**
+	 * 
+	 */
+	private static final long serialVersionUID = -5371340850814511699L;
+
+
+
 	 @Id
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)
 
@@ -41,15 +49,16 @@ public class Reservation implements Serializable {
 	 private long id;
 	 
 
-	
+	 @Temporal(TemporalType.DATE)
 	 @Column(name = "dataInizio", columnDefinition="TIMESTAMP")
-	 @DateTimeFormat(pattern="dd/MM/yyyy")
-	 private LocalDate dataInizio;
+	// @DateTimeFormat(pattern="dd-MM-yyyy")
+	 private Date dataInizio;
 	 
-	 
+	 @Temporal(TemporalType.DATE)
 	 @Column(name = "dataFine", columnDefinition="TIMESTAMP")
-	 @DateTimeFormat(pattern="dd/MM/yyyy")
-	 private LocalDate dataFine;
+	// @DateTimeFormat(pattern="dd-MM-yyyy")
+	 
+	 private Date dataFine;
 	
 	
 	 @Column(name = "approvazione")
@@ -58,14 +67,18 @@ public class Reservation implements Serializable {
 	 @ManyToOne(cascade = { CascadeType.REMOVE})
 	 @EqualsAndHashCode.Exclude   //nelle notazioni manytoone altrimenti il lombok va in crisi
 	 @JoinColumn(name = "idUser",referencedColumnName = "id")
-	 @JsonBackReference //parte finale delle serializzazione
-	
-	 private User user;
+	// @JsonBackReference //parte finale delle serializzazione
+	// @JsonIgnoreProperties(value = {"reservation", "hibernateLazyInitializer"})
+	 public User user;
 	 
 	 
 	 @ManyToOne
 	 @EqualsAndHashCode.Exclude   //nelle notazioni manytoone altrimenti il lombok va in crisi
 	 @JoinColumn(name = "idVehicle",referencedColumnName = "id")
-	 @JsonBackReference //parte finale delle serializzazione
-	 private Vehicle vehicle;
+	// @JsonBackReference //parte finale delle serializzazione
+	// @JsonIgnoreProperties(value = {"reservation", "hibernateLazyInitializer"})
+	 public Vehicle vehicle;
+
+
+	
 }

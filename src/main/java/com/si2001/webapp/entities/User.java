@@ -12,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
@@ -23,6 +25,7 @@ import javax.persistence.OneToMany;
 @Entity
 @Data
 @Table(name = "user")
+
 public class User implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -49,8 +52,8 @@ public class User implements Serializable{
  @Column(name = "tipo")
  private String tipo;
 
-@OneToMany (mappedBy = "user",cascade = CascadeType.REMOVE)
-@JsonManagedReference   //poichè i dati vengono mappati e serializzati dal db in formato json
+@OneToMany (fetch = FetchType.LAZY, mappedBy = "user",cascade = CascadeType.REMOVE)
+//@JsonManagedReference   //poichè i dati vengono mappati e serializzati dal db in formato json
  private List<Reservation> reservations;
 	public List<Reservation> getReservation() {
 		return reservations;

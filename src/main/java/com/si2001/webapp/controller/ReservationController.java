@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.si2001.webapp.dto.ReservationDto;
-import com.si2001.webapp.dto.UserDto;
-import com.si2001.webapp.dto.VehicleDto;
+import com.si2001.webapp.entities.Reservation;
 import com.si2001.webapp.service.ReservationService;
+
 
 @RestController
 @RequestMapping("/reservation")
 public class ReservationController {
-	private static final Logger logger = LoggerFactory.getLogger(VehicleDto.class);
+	private static final Logger logger = LoggerFactory.getLogger(long.class);
 	@Autowired
 	private ReservationService reservationService;
 	
@@ -37,12 +37,12 @@ public class ReservationController {
 		return new ResponseEntity<List<ReservationDto>>(reservations, HttpStatus.OK);
 	}
 	
-	@GetMapping(value = "/find/idUser/{param}", produces = "application/json")
-	public ResponseEntity<List<ReservationDto>> findByIdUser(@PathVariable("param")long param){
+	/*@GetMapping(value = "/find/idUser/{param}", produces = "application/json")
+	public ResponseEntity<ReservationDto> findByIdUser(@PathVariable("param")long param){
 		logger.info("****** Find " + " *******");
-		List<ReservationDto> reservations = reservationService.trovaPrenotazioniPerUser(param);
-		return new ResponseEntity<List<ReservationDto>>(reservations, HttpStatus.OK);
-	}
+		ReservationDto reservations = reservationService.trovaPrenotazioniPerUser(param);
+		return new ResponseEntity<ReservationDto>(reservations, HttpStatus.OK);
+	}*/
 	@GetMapping(value = "/find/{param}", produces = "application/json")
 	public ResponseEntity<ReservationDto> findById(@PathVariable("param")long param){
 		logger.info("****** Find " + " *******");
@@ -64,6 +64,18 @@ public class ReservationController {
 	@RequestMapping(value="/delete", method = RequestMethod.DELETE, produces = "application/json")
 	public ResponseEntity<?> deleteVehicle(@RequestBody ReservationDto dto){
 		reservationService.elReservation(dto);
+		ObjectMapper mapper = new ObjectMapper();
+		ObjectNode responseNode = mapper.createObjectNode();
+		responseNode.put("code", HttpStatus.OK.toString());
+		responseNode.put("message", "Eliminazione Prenotazione " +  " Eseguita Con Successo");
+		
+		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.OK);
+	}
+	@RequestMapping(value="/add", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	public ResponseEntity<?> addReservawtion(@RequestBody Reservation dto){
+	//	System.out.println(dto.idUser);
+	//	logger.info("****** Find " + dto.getUser()+ " *******");
+		reservationService.insReservation(dto);
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode responseNode = mapper.createObjectNode();
 		responseNode.put("code", HttpStatus.OK.toString());

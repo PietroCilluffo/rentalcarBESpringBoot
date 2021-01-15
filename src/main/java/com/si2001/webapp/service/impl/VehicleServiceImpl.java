@@ -1,5 +1,6 @@
 package com.si2001.webapp.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.modelmapper.ModelMapper;
@@ -7,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.si2001.webapp.dto.UserDto;
 import com.si2001.webapp.dto.VehicleDto;
 import com.si2001.webapp.entities.Vehicle;
 import com.si2001.webapp.repository.VehicleRepository;
@@ -52,7 +54,7 @@ public List<VehicleDto> trovaTutti() {
 	// TODO Auto-generated method stub
 	List<Vehicle> vehicles = vehicleRepo.findAll();
 	
-	List<VehicleDto> dtos = null;
+	List<VehicleDto> dtos = new ArrayList<VehicleDto>();
 	for(int i = 0; i<vehicles.size(); i++) {
 		Vehicle v = vehicles.get(i);
 		dtos.add(modelMapper.map(v, VehicleDto.class)) ;
@@ -72,7 +74,7 @@ public void elVehicle(VehicleDto vehicle) {
 public List<VehicleDto> trovaPerModello(String modello) {
 	// TODO Auto-generated method stub
 	List<Vehicle> vehicles = vehicleRepo.findByModello(modello);
-	List<VehicleDto> dtos = null;
+	List<VehicleDto> dtos = new ArrayList<VehicleDto>();
 	for(int i = 0; i<vehicles.size(); i++) {
 		Vehicle v = vehicles.get(i);
 		dtos.add(modelMapper.map(v, VehicleDto.class)) ;
@@ -84,7 +86,7 @@ public List<VehicleDto> trovaPerModello(String modello) {
 public List<VehicleDto> trovaPerCasa(String casa) {
 	// TODO Auto-generated method stub
 	List<Vehicle> vehicles = vehicleRepo.findByCasa(casa);
-	List<VehicleDto> dtos = null;
+	List<VehicleDto> dtos = new ArrayList<VehicleDto>();
 	for(int i = 0; i<vehicles.size(); i++) {
 		Vehicle v = vehicles.get(i);
 		dtos.add(modelMapper.map(v, VehicleDto.class)) ;
@@ -96,7 +98,7 @@ public List<VehicleDto> trovaPerCasa(String casa) {
 public List<VehicleDto> trovaPerAnno(String anno) {
 	// TODO Auto-generated method stub
 	List<Vehicle> vehicles = vehicleRepo.findByAnno(anno);
-	List<VehicleDto> dtos = null;
+	List<VehicleDto> dtos = new ArrayList<VehicleDto>();
 	for(int i = 0; i<vehicles.size(); i++) {
 		Vehicle v = vehicles.get(i);
 		dtos.add(modelMapper.map(v, VehicleDto.class)) ;
@@ -107,7 +109,7 @@ public List<VehicleDto> trovaPerAnno(String anno) {
 public List<VehicleDto> trovaPerTarga(String targa) {
 	// TODO Auto-generated method stub
 	List<Vehicle> vehicles = vehicleRepo.findByTarga(targa);
-	List<VehicleDto> dtos = null;
+	List<VehicleDto> dtos = new ArrayList<VehicleDto>();
 	for(int i = 0; i<vehicles.size(); i++) {
 		Vehicle v = vehicles.get(i);
 		dtos.add(modelMapper.map(v, VehicleDto.class)) ;

@@ -13,6 +13,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Data;
@@ -46,8 +47,8 @@ public class Vehicle  implements Serializable{
 	 @Column(name = "anno")
 	 private String anno;
 
-	@OneToMany (mappedBy = "vehicle",cascade = { CascadeType.ALL})
-	@JsonManagedReference 
+	@OneToMany (fetch = FetchType.LAZY, mappedBy = "vehicle",cascade = { CascadeType.ALL})
+//	@JsonManagedReference 
 	 private List<Reservation> reservations;
 	 public List<Reservation> getReservation() {
 			return reservations;
