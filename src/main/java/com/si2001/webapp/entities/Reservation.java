@@ -31,7 +31,6 @@ import java.util.Date;
 
 
 @Entity
-@Data
 @Table(name = "reservation")
 public class Reservation implements Serializable {
 	
@@ -49,13 +48,15 @@ public class Reservation implements Serializable {
 	 private long id;
 	 
 
-	 @Temporal(TemporalType.DATE)
-	 @Column(name = "dataInizio", columnDefinition="TIMESTAMP")
+	
+
+	@Temporal(TemporalType.DATE)
+	 @Column(name = "data_inizio")
 	// @DateTimeFormat(pattern="dd-MM-yyyy")
 	 private Date dataInizio;
 	 
 	 @Temporal(TemporalType.DATE)
-	 @Column(name = "dataFine", columnDefinition="TIMESTAMP")
+	 @Column(name = "data_fine")
 	// @DateTimeFormat(pattern="dd-MM-yyyy")
 	 
 	 private Date dataFine;
@@ -64,21 +65,79 @@ public class Reservation implements Serializable {
 	 @Column(name = "approvazione")
 	 private boolean approvazione;
 	 
-	 @ManyToOne(cascade = { CascadeType.REMOVE})
+	 @ManyToOne
 	 @EqualsAndHashCode.Exclude   //nelle notazioni manytoone altrimenti il lombok va in crisi
-	 @JoinColumn(name = "idUser",referencedColumnName = "id")
-	// @JsonBackReference //parte finale delle serializzazione
+	 @JoinColumn(name = "id_user",referencedColumnName = "id")
+	 @JsonBackReference //parte finale delle serializzazione
 	// @JsonIgnoreProperties(value = {"reservation", "hibernateLazyInitializer"})
 	 public User user;
 	 
 	 
 	 @ManyToOne
 	 @EqualsAndHashCode.Exclude   //nelle notazioni manytoone altrimenti il lombok va in crisi
-	 @JoinColumn(name = "idVehicle",referencedColumnName = "id")
-	// @JsonBackReference //parte finale delle serializzazione
+	 @JoinColumn(name = "id_vehicle",referencedColumnName = "id")
+	 @JsonBackReference //parte finale delle serializzazione
 	// @JsonIgnoreProperties(value = {"reservation", "hibernateLazyInitializer"})
 	 public Vehicle vehicle;
 
+	 public long getId() {
+			return id;
+		}
+
+
+		public void setId(long id) {
+			this.id = id;
+		}
+
+
+		public Date getDataInizio() {
+			return dataInizio;
+		}
+
+
+		public void setDataInizio(Date dataInizio) {
+			this.dataInizio = dataInizio;
+		}
+
+
+		public Date getDataFine() {
+			return dataFine;
+		}
+
+
+		public void setDataFine(Date dataFine) {
+			this.dataFine = dataFine;
+		}
+
+
+		public boolean isApprovazione() {
+			return approvazione;
+		}
+
+
+		public void setApprovazione(boolean approvazione) {
+			this.approvazione = approvazione;
+		}
+
+
+		public User getUser() {
+			return user;
+		}
+
+
+		public void setUser(User user) {
+			this.user = user;
+		}
+
+
+		public Vehicle getVehicle() {
+			return vehicle;
+		}
+
+
+		public void setVehicle(Vehicle vehicle) {
+			this.vehicle = vehicle;
+		}
 
 	
 }

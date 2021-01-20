@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,7 +22,7 @@ import com.si2001.webapp.dto.ReservationDto;
 import com.si2001.webapp.entities.Reservation;
 import com.si2001.webapp.service.ReservationService;
 
-
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/reservation")
 public class ReservationController {
@@ -37,16 +38,17 @@ public class ReservationController {
 		return new ResponseEntity<List<ReservationDto>>(reservations, HttpStatus.OK);
 	}
 	
-	/*@GetMapping(value = "/find/idUser/{param}", produces = "application/json")
-	public ResponseEntity<ReservationDto> findByIdUser(@PathVariable("param")long param){
-		logger.info("****** Find " + " *******");
-		ReservationDto reservations = reservationService.trovaPrenotazioniPerUser(param);
-		return new ResponseEntity<ReservationDto>(reservations, HttpStatus.OK);
-	}*/
+	@GetMapping(value = "/find/idUser/{param}", produces = "application/json")
+	public ResponseEntity<List<ReservationDto>> findByIdUser(@PathVariable("param")long param){
+		logger.info("****** Find id user r " + param+ " *******");
+		List<ReservationDto> reservations = reservationService.trovaPrenotazioniPerUser(param);
+		return new ResponseEntity<List<ReservationDto>>(reservations, HttpStatus.OK);
+	}
 	@GetMapping(value = "/find/{param}", produces = "application/json")
 	public ResponseEntity<ReservationDto> findById(@PathVariable("param")long param){
-		logger.info("****** Find " + " *******");
+		
 		ReservationDto reservation = reservationService.cercaReservationId(param);
+		logger.info("****** Find id res " +reservation.dataFine+ " *******");
 		return new ResponseEntity<ReservationDto>(reservation, HttpStatus.OK);
 	}
 	
@@ -72,9 +74,9 @@ public class ReservationController {
 		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.OK);
 	}
 	@RequestMapping(value="/add", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-	public ResponseEntity<?> addReservawtion(@RequestBody Reservation dto){
+	public ResponseEntity<?> addReservawtion(@RequestBody ReservationDto dto){
 	//	System.out.println(dto.idUser);
-	//	logger.info("****** Find " + dto.getUser()+ " *******");
+		logger.info("****** add reservation " + dto.approvazione + " *******");
 		reservationService.insReservation(dto);
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode responseNode = mapper.createObjectNode();
@@ -84,12 +86,12 @@ public class ReservationController {
 		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.OK);
 	}
 	@RequestMapping(value="/update", method = RequestMethod.PUT, produces = "application/json")
-	public ResponseEntity<?> updateVehicle(@RequestBody ReservationDto dto){
+	public ResponseEntity<?> updateReservation(@RequestBody ReservationDto dto){
 		reservationService.aggReservation(dto);
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode responseNode = mapper.createObjectNode();
 		responseNode.put("code", HttpStatus.OK.toString());
-		responseNode.put("message", "Agg Articolo " +  " Eseguita Con Successo");
+		responseNode.put("message", "Aggiornamento veicolo " +  " Eseguito Con Successo");
 		
 		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.CREATED);
 	}

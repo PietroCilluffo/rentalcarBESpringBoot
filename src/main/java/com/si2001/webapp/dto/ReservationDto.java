@@ -9,9 +9,9 @@ import lombok.Data;
 @Data
 public class ReservationDto {
 	public long id;
-	public String  dataInizio;
-	public	String  dataFine;
+	public Date  dataInizio;
+	public	Date  dataFine;
 	public boolean approvazione;
-	public User user = new User();
-	public Vehicle vehicle = new Vehicle();
+	public UserDto user = new UserDto();
+	public VehicleDto vehicle = new VehicleDto();
 }

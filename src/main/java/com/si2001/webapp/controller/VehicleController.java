@@ -22,10 +22,9 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.si2001.webapp.dto.VehicleDto;
 import com.si2001.webapp.service.VehicleService;
 
-
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/vehicle")
-
 public class VehicleController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(VehicleDto.class);
@@ -45,7 +44,12 @@ public class VehicleController {
 		List<VehicleDto> vehicles = vehicleService.trovaPerCasa(param);
 		return new ResponseEntity<List<VehicleDto>>(vehicles, HttpStatus.OK);
 	}
-	
+	@GetMapping(value = "/find/{param}", produces = "application/json")
+	public ResponseEntity<VehicleDto> findById(@PathVariable("param")long param){
+		logger.info("****** Find vehicle  " + param + " *******");
+		VehicleDto vehicles = vehicleService.cercaVehicleId(param);
+		return new ResponseEntity<VehicleDto>(vehicles, HttpStatus.OK);
+	}
 	@GetMapping(value = "/find/modello/{param}", produces = "application/json")
 	public ResponseEntity<List<VehicleDto>> findByModello(@PathVariable("param")String param){
 		logger.info("****** Find " + " *******");
@@ -60,19 +64,20 @@ public class VehicleController {
 	}
 	@GetMapping(value = "/find/targa/{param}", produces = "application/json")
 	public ResponseEntity<List<VehicleDto>> findByTarga(@PathVariable("param")String param){
-		logger.info("****** Find " + " *******");
+		logger.info("****** Find targa " +param + " *******");
 		List<VehicleDto> vehicles = vehicleService.trovaPerTarga(param);
 		return new ResponseEntity<List<VehicleDto>>(vehicles, HttpStatus.OK);
 	}
 	
 	@PostMapping(value = "/add")
 	public ResponseEntity<?> addVehicle(@RequestBody VehicleDto dto){
+		logger.info("****** Find " + " *******");
 		vehicleService.insVehicle(dto);
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode responseNode = mapper.createObjectNode();
 		
 		responseNode.put("code", HttpStatus.OK.toString());
-		responseNode.put("message", String.format("Inserimento Veicolo Eseguita Con Successo"));
+		responseNode.put("message", String.format("Inserimento Veicolo Eseguito Con Successo"));
 		
 		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.CREATED);
 	}
@@ -83,7 +88,7 @@ public class VehicleController {
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode responseNode = mapper.createObjectNode();
 		responseNode.put("code", HttpStatus.OK.toString());
-		responseNode.put("message", "Eliminazione Articolo " +  " Eseguita Con Successo");
+		responseNode.put("message", "Eliminazione Veicolo " +  " Eseguita Con Successo");
 		
 		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.OK);
 	}
@@ -94,17 +99,18 @@ public class VehicleController {
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode responseNode = mapper.createObjectNode();
 		responseNode.put("code", HttpStatus.OK.toString());
-		responseNode.put("message", "Eliminazione Articolo " +  " Eseguita Con Successo");
+		responseNode.put("message", "Eliminazione Veicolo " +  " Eseguita Con Successo");
 		
 		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.OK);
 	}
 	@RequestMapping(value="/update", method = RequestMethod.PUT, produces = "application/json")
 	public ResponseEntity<?> updateVehicle(@RequestBody VehicleDto dto){
 		vehicleService.aggVehicle(dto);
+		logger.info("****** aggiornamento " + " *******");
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode responseNode = mapper.createObjectNode();
 		responseNode.put("code", HttpStatus.OK.toString());
-		responseNode.put("message", "Agg Articolo " +  " Eseguita Con Successo");
+		responseNode.put("message", String.format("Aggiornamento Veicolo Eseguito Con Successo"));
 		
 		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.CREATED);
 	}

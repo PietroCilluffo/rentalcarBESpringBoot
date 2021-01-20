@@ -16,7 +16,9 @@ import com.si2001.webapp.dto.ReservationDto;
 import com.si2001.webapp.dto.UserDto;
 import com.si2001.webapp.dto.VehicleDto;
 import com.si2001.webapp.entities.Reservation;
+import com.si2001.webapp.entities.User;
 import com.si2001.webapp.repository.ReservationRepository;
+import com.si2001.webapp.repository.UserRepository;
 import com.si2001.webapp.service.ReservationService;
 @Service
 @Transactional
@@ -24,14 +26,17 @@ public class ReservationServiceImpl implements ReservationService{
 	private static final Logger logger = LoggerFactory.getLogger(long.class);
 	@Autowired
   ReservationRepository reservationRepo;
+	
+	@Autowired
+	UserRepository userRepo;
   @Autowired
   private ModelMapper modelMapper;
 @Override
-public long insReservation(Reservation reservation) {
+public long insReservation(ReservationDto reservation) {
 	// TODO Auto-generated method stub
-	//Reservation r = modelMapper.map(reservation,Reservation.class);
+	Reservation r = modelMapper.map(reservation,Reservation.class);
 	//logger.info("****** Find " +r+  " *******");
-	reservationRepo.save(reservation);
+	reservationRepo.save(r);
 	return 0;
 }
 
@@ -73,13 +78,20 @@ public List<ReservationDto> trovaTutti() {
 }
 
 @Override
-public ReservationDto trovaPrenotazioniPerUser(long idUser) {
+public List<ReservationDto> trovaPrenotazioniPerUser(long idUser) {
 	// TODO Auto-generated method stub
-	Reservation reservation =  reservationRepo.findById(idUser);
+	User user = userRepo.findById(idUser);
+	logger.info("****** Find " +user.getNome()+  " *******");
+	List<Reservation> reservations =  reservationRepo.findByUser(user); //chiamare prima la repo di user per id, mi restituisco l'oggetto e poi mi faccio la seconda request
+	logger.info("****** Find " +reservations.size()+  " *******");
+	List<ReservationDto> dtos = new ArrayList<ReservationDto>();
 	
-	ReservationDto dto = modelMapper.map(reservation, ReservationDto.class);
-	
-	return dto;
+	for(int i = 0; i<reservations.size(); i++) {
+		Reservation r = reservations.get(i);
+		//logger.info("****** Find " +r.getId()+  " *******");
+		dtos.add(modelMapper.map(r, ReservationDto.class)) ;
+	}
+	return dtos;
 }
 
 @Override

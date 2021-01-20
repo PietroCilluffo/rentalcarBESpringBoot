@@ -21,10 +21,8 @@ import lombok.Data;
 import javax.persistence.OneToMany;
 
 @Entity
-@Data
+//@Data
 @Table(name = "vehicle")
-
-
 public class Vehicle  implements Serializable{
 
 	private static final long serialVersionUID = 1L;
@@ -48,7 +46,7 @@ public class Vehicle  implements Serializable{
 	 private String anno;
 
 	@OneToMany (fetch = FetchType.LAZY, mappedBy = "vehicle",cascade = { CascadeType.ALL})
-//	@JsonManagedReference 
+	@JsonManagedReference 
 	 private List<Reservation> reservations;
 	 public List<Reservation> getReservation() {
 			return reservations;
@@ -63,4 +61,42 @@ public class Vehicle  implements Serializable{
 		this.casa = casa;
 		this.anno = anno;
 	}
+	public long getId() {
+		return id;
+	}
+	public void setId(long id) {
+		this.id = id;
+	}
+	public String getTarga() {
+		return targa;
+	}
+	public void setTarga(String targa) {
+		this.targa = targa;
+	}
+	public String getModello() {
+		return modello;
+	}
+	public void setModello(String modello) {
+		this.modello = modello;
+	}
+	public String getCasa() {
+		return casa;
+	}
+	public void setCasa(String casa) {
+		this.casa = casa;
+	}
+	public String getAnno() {
+		return anno;
+	}
+	public void setAnno(String anno) {
+		this.anno = anno;
+	}
+	public List<Reservation> getReservations() {
+		return reservations;
+	}
+	public void setReservations(List<Reservation> reservations) {
+		this.reservations = reservations;
+	}
+	
+	
 }

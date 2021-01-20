@@ -1,12 +1,16 @@
 server:
-  port: 8080
+  port: 5050
 spring:
- 
+  
   datasource:
     password: root
-    url: jdbc:mysql://localhost:3306/rentalcar?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3306/rentalcar2?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
     username: root
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        jdbc:
+           timezone: UTC
   

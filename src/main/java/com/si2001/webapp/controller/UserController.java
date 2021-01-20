@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,7 +25,7 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.si2001.webapp.dto.UserDto;
 import com.si2001.webapp.service.UserService;
 
-
+@CrossOrigin("http://localhost:4200")
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -38,7 +39,12 @@ public class UserController {
 		List<UserDto> users = userService.trovaTutti();
 		return new ResponseEntity<List<UserDto>>(users, HttpStatus.OK);
 	}
-	
+	@GetMapping(value = "/find/{param}", produces = "application/json")
+	public ResponseEntity<UserDto> findbyId(@PathVariable("param")long param){
+		logger.info("****** Find id " + param +" *******");
+		UserDto user = userService.cercaUserId(param);
+		return new ResponseEntity<UserDto>(user, HttpStatus.OK);
+	}
 	@GetMapping(value = "/find/nome/{param}", produces = "application/json")
 	public ResponseEntity<List<UserDto>> findByNome(@PathVariable("param")String param){
 		logger.info("****** Find " + " *******");
@@ -60,7 +66,7 @@ public class UserController {
 	}
 
 	
-	@PostMapping(value = "/add", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/add", produces = "application/json")
 	@ResponseBody
 	public ResponseEntity<?> addUser(@RequestBody UserDto dto){
 		logger.info("****** inserimento " + dto + " *******");
@@ -70,7 +76,7 @@ public class UserController {
 		ObjectNode responseNode = mapper.createObjectNode();
 		
 		responseNode.put("code", HttpStatus.OK.toString());
-		responseNode.put("message", String.format("Inserimento Veicolo Eseguita Con Successo"));
+		responseNode.put("message", String.format("Inserimento utente Eseguito Con Successo"));
 		
 		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.CREATED);
 	}
@@ -90,11 +96,12 @@ public class UserController {
 	
 	@RequestMapping(value="/delete", method = RequestMethod.DELETE, produces = "application/json")
 	public ResponseEntity<?> deleteVehicle(@RequestBody UserDto dto){
+		logger.info("****** eliminazione utente " + dto + " *******");
 		userService.elUser(dto);
 		ObjectMapper mapper = new ObjectMapper();
 		ObjectNode responseNode = mapper.createObjectNode();
 		responseNode.put("code", HttpStatus.OK.toString());
-		responseNode.put("message", "Eliminazione Articolo " +  " Eseguita Con Successo");
+		responseNode.put("message", "Eliminazione Utente " +  " Eseguita Con Successo");
 		
 		return new ResponseEntity<>(responseNode, new HttpHeaders(), HttpStatus.OK);
 	}
